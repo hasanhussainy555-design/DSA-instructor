@@ -1,0 +1,453 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DSA GURU 🔥</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&amp;family=Space+Grotesk:wght@500;600&amp;display=swap');
+
+        body {
+            font-family: 'Inter', system_ui, sans-serif;
+        }
+
+        .logo-font {
+            font-family: 'Space Grotesk', sans-serif;
+        }
+
+        .chat-container {
+            scrollbar-width: thin;
+            scrollbar-color: #22d3ee #27272a;
+        }
+
+        .chat-container::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .chat-container::-webkit-scrollbar-thumb {
+            background-color: #22d3ee;
+            border-radius: 20px;
+        }
+
+        .message-bubble {
+            animation: fadeIn 0.3s ease forwards;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(15px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .typing {
+            display: inline-flex;
+            align-items: center;
+        }
+
+        .dot {
+            width: 5px;
+            height: 5px;
+            background-color: #64748b;
+            border-radius: 50%;
+            margin: 0 2px;
+            animation: typingBounce 1.2s infinite;
+        }
+
+        .dot:nth-child(2) {
+            animation-delay: 0.2s;
+        }
+
+        .dot:nth-child(3) {
+            animation-delay: 0.4s;
+        }
+
+        @keyframes typingBounce {
+
+            0%,
+            80%,
+            100% {
+                transform: translateY(0);
+            }
+
+            40% {
+                transform: translateY(-5px);
+            }
+        }
+
+        .code-block {
+            font-family: ui-monospace, monospace;
+        }
+    </style>
+</head>
+
+<body class="bg-zinc-950 text-white">
+    <div class="flex h-screen overflow-hidden">
+        <!-- Sidebar -->
+        <div class="w-80 bg-zinc-900 border-r border-zinc-800 flex flex-col">
+            <!-- Logo Header -->
+            <div class="p-6 border-b border-zinc-800">
+                <div class="flex items-center gap-3">
+                    <div
+                        class="w-11 h-11 bg-gradient-to-br from-cyan-500 to-purple-600 rounded-2xl flex items-center justify-center text-3xl shadow-lg shadow-cyan-500/30">
+                        🧠
+                    </div>
+                    <div>
+                        <h1 class="logo-font text-3xl font-semibold tracking-tighter text-white">DSA GURU</h1>
+                        <p class="text-cyan-400 text-xs tracking-[2px] font-medium">ANGRY INSTRUCTOR MODE</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- New Chat -->
+            <div class="px-6 py-4">
+                <button onclick="clearChat()"
+                    class="w-full flex items-center justify-center gap-2 bg-zinc-800 hover:bg-zinc-700 transition-all py-3.5 rounded-3xl text-sm font-medium">
+                    <i class="fa-solid fa-plus"></i>
+                    <span>NEW CHAT</span>
+                </button>
+            </div>
+
+            <!-- Suggested Questions -->
+            <div class="px-6 flex-1 overflow-auto">
+                <p class="text-zinc-500 text-xs font-medium tracking-widest mb-4 mt-2">SUGGESTED QUESTIONS</p>
+                <div class="space-y-2">
+                    <button onclick="sendSuggested('Explain Binary Search with example and time complexity')"
+                        class="w-full text-left px-5 py-4 bg-zinc-800 hover:bg-zinc-700 rounded-3xl text-sm transition-all flex items-center gap-3 group">
+                        <span class="text-cyan-400 text-xl">🔍</span>
+                        <span class="group-hover:text-cyan-400 transition-colors">Binary Search explained</span>
+                    </button>
+                    <button onclick="sendSuggested('Reverse a singly linked list in JavaScript')"
+                        class="w-full text-left px-5 py-4 bg-zinc-800 hover:bg-zinc-700 rounded-3xl text-sm transition-all flex items-center gap-3 group">
+                        <span class="text-cyan-400 text-xl">🔗</span>
+                        <span class="group-hover:text-cyan-400 transition-colors">Reverse Linked List</span>
+                    </button>
+                    <button onclick="sendSuggested('Implement Stack using Array with all operations')"
+                        class="w-full text-left px-5 py-4 bg-zinc-800 hover:bg-zinc-700 rounded-3xl text-sm transition-all flex items-center gap-3 group">
+                        <span class="text-cyan-400 text-xl">📚</span>
+                        <span class="group-hover:text-cyan-400 transition-colors">Stack using Array</span>
+                    </button>
+                    <button onclick="sendSuggested('Time and Space complexity of Quick Sort')"
+                        class="w-full text-left px-5 py-4 bg-zinc-800 hover:bg-zinc-700 rounded-3xl text-sm transition-all flex items-center gap-3 group">
+                        <span class="text-cyan-400 text-xl">⚡</span>
+                        <span class="group-hover:text-cyan-400 transition-colors">Quick Sort Complexity</span>
+                    </button>
+                    <button onclick="sendSuggested('Two Sum problem - optimal solution with code')"
+                        class="w-full text-left px-5 py-4 bg-zinc-800 hover:bg-zinc-700 rounded-3xl text-sm transition-all flex items-center gap-3 group">
+                        <span class="text-cyan-400 text-xl">🔢</span>
+                        <span class="group-hover:text-cyan-400 transition-colors">Two Sum Problem</span>
+                    </button>
+                    <button onclick="sendSuggested('Difference between Array and Linked List')"
+                        class="w-full text-left px-5 py-4 bg-zinc-800 hover:bg-zinc-700 rounded-3xl text-sm transition-all flex items-center gap-3 group">
+                        <span class="text-cyan-400 text-xl">📊</span>
+                        <span class="group-hover:text-cyan-400 transition-colors">Array vs Linked List</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Footer -->
+            <div class="p-6 border-t border-zinc-800 text-xs text-zinc-500">
+                <div class="flex items-center gap-2">
+                    <div class="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
+                    <span>Connected to Gemini 3 Flash Preview</span>
+                </div>
+                <p class="mt-3 text-[10px]">Only DSA questions allowed.<br>Non-DSA = instant gussa 🔥</p>
+            </div>
+        </div>
+
+        <!-- Main Chat Area -->
+        <div class="flex-1 flex flex-col">
+            <!-- Chat Header -->
+            <div class="h-16 bg-zinc-900 border-b border-zinc-800 px-8 flex items-center justify-between">
+                <div class="flex items-center gap-4">
+                    <div class="flex items-center gap-3">
+                        <div
+                            class="w-9 h-9 bg-gradient-to-br from-purple-500 to-cyan-500 rounded-2xl flex items-center justify-center text-2xl">
+                            🔥</div>
+                        <div>
+                            <p class="font-semibold text-lg">DSA Guru</p>
+                            <p class="text-xs text-emerald-400 flex items-center gap-1">
+                                <span class="relative flex h-2 w-2">
+                                    <span
+                                        class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                                    <span class="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
+                                </span>
+                                Online • Ready to roast
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="flex items-center gap-6 text-zinc-400">
+                    <button onclick="clearChat()"
+                        class="hover:text-white transition-colors flex items-center gap-2 text-sm">
+                        <i class="fa-solid fa-trash"></i>
+                        <span class="hidden md:inline">Clear Chat</span>
+                    </button>
+                    <div class="w-px h-6 bg-zinc-700"></div>
+                    <div class="flex items-center gap-2 text-xs bg-zinc-800 px-4 py-2 rounded-3xl">
+                        <i class="fa-solid fa-keyboard"></i>
+                        <span>Press Enter to send</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Messages Area -->
+            <div id="chat" class="flex-1 overflow-y-auto chat-container p-8 space-y-8 bg-zinc-950"></div>
+
+            <!-- Input Area -->
+            <div class="p-6 bg-zinc-900 border-t border-zinc-800">
+                <div class="max-w-4xl mx-auto">
+                    <div class="relative">
+                        <textarea id="user-input" rows="1"
+                            class="w-full bg-zinc-800 border border-zinc-700 focus:border-cyan-500 rounded-3xl py-5 px-7 pr-28 text-base resize-y max-h-52 focus:outline-none transition-all"
+                            placeholder="Ask anything about DSA... (non-DSA = bhai daant padegi)"></textarea>
+
+                        <button onclick="sendMessage()"
+                            class="absolute right-3 bottom-3 bg-gradient-to-r from-cyan-500 to-purple-600 hover:from-cyan-400 hover:to-purple-500 w-12 h-12 rounded-2xl flex items-center justify-center transition-all active:scale-95 shadow-lg shadow-cyan-500/40">
+                            <i class="fa-solid fa-paper-plane text-white text-xl"></i>
+                        </button>
+                    </div>
+                    <p class="text-center text-[10px] text-zinc-500 mt-4">DSA Guru will only answer Data Structures
+                        &amp; Algorithms questions</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // ============== CONFIG ==============
+        const API_KEY = "AIzaSyApVZs3ZITXBnQkykHT6kQicfwqQD6uLag";
+        const MODEL = "gemini-3-flash-preview";
+        const API_URL = `https://generativelanguage.googleapis.com/v1beta/models/${MODEL}:generateContent?key=${API_KEY}`;
+
+        const SYSTEM_PROMPT = `you are a DSA Instructor.you will only reply to the problem related to data structure and algoritm. solve user query in simplest way if user ask question not related to data structure and algoritm reply them rudely example:if user ask How are you reply: Bhai DSA ka question pooch ye kya pooch rha h chinra h kya you have to reply him with anger with questiion or say Dekho berozgaar aage kuch dhanda h nhi aagye mujhe dimaag maarne is note related to data structure and algoritm else reply them poiltely`;
+
+        // ============== STATE ==============
+        let messages = [];
+        let isLoading = false;
+
+        // ============== DOM ELEMENTS ==============
+        const chat = document.getElementById('chat');
+        const input = document.getElementById('user-input');
+
+        // ============== UTILITIES ==============
+        function escapeHtml(unsafe) {
+            return unsafe
+                .replace(/&/g, "&amp;")
+                .replace(/</g, "&lt;")
+                .replace(/>/g, "&gt;")
+                .replace(/"/g, "&quot;")
+                .replace(/'/g, "&#039;");
+        }
+
+        function scrollToBottom() {
+            chat.scrollTop = chat.scrollHeight;
+        }
+
+        function addMessage(role, content, isTemporary = false) {
+            const messageDiv = document.createElement('div');
+            messageDiv.className = `flex ${role === 'user' ? 'justify-end' : 'justify-start'} message-bubble`;
+
+            if (role === 'model') {
+                messageDiv.innerHTML = `
+                    <div class="flex gap-4 max-w-[75%]">
+                        <div class="w-9 h-9 bg-gradient-to-br from-purple-600 to-cyan-500 rounded-2xl flex-shrink-0 flex items-center justify-center text-2xl shadow-md">🧠</div>
+                        <div class="bg-zinc-800 rounded-3xl rounded-tl-none px-6 py-5">
+                            <div class="text-cyan-400 text-xs font-medium mb-2 flex items-center gap-2">
+                                <span>DSA GURU</span>
+                                <span class="text-[10px] text-zinc-500">• just now</span>
+                            </div>
+                            <div class="whitespace-pre-wrap leading-relaxed text-[15.2px] text-zinc-100">${escapeHtml(content)}</div>
+                        </div>
+                    </div>
+                `;
+            } else {
+                messageDiv.innerHTML = `
+                    <div class="max-w-[75%] bg-gradient-to-br from-cyan-600 to-purple-600 rounded-3xl rounded-tr-none px-6 py-5">
+                        <div class="whitespace-pre-wrap leading-relaxed text-[15.2px]">${escapeHtml(content)}</div>
+                    </div>
+                `;
+            }
+
+            chat.appendChild(messageDiv);
+            scrollToBottom();
+            return messageDiv;
+        }
+
+        function showTypingIndicator() {
+            const typingDiv = document.createElement('div');
+            typingDiv.id = 'typing-indicator';
+            typingDiv.className = 'flex justify-start message-bubble';
+            typingDiv.innerHTML = `
+                <div class="flex gap-4 max-w-[75%]">
+                    <div class="w-9 h-9 bg-gradient-to-br from-purple-600 to-cyan-500 rounded-2xl flex-shrink-0 flex items-center justify-center text-2xl shadow-md">🧠</div>
+                    <div class="bg-zinc-800 rounded-3xl rounded-tl-none px-6 py-5">
+                        <div class="typing flex items-center gap-1 text-zinc-400 text-sm">
+                            Thinking
+                            <span class="dot"></span>
+                            <span class="dot"></span>
+                            <span class="dot"></span>
+                        </div>
+                    </div>
+                </div>
+            `;
+            chat.appendChild(typingDiv);
+            scrollToBottom();
+            return typingDiv;
+        }
+
+        function removeTypingIndicator() {
+            const typing = document.getElementById('typing-indicator');
+            if (typing) typing.remove();
+        }
+
+        function renderMessages() {
+            chat.innerHTML = '';
+
+            // Welcome message (always shown)
+            if (messages.length === 0) {
+                const welcome = document.createElement('div');
+                welcome.className = 'flex justify-start message-bubble';
+                welcome.innerHTML = `
+                    <div class="flex gap-4 max-w-[75%]">
+                        <div class="w-9 h-9 bg-gradient-to-br from-purple-600 to-cyan-500 rounded-2xl flex-shrink-0 flex items-center justify-center text-2xl shadow-md">🧠</div>
+                        <div class="bg-zinc-800 rounded-3xl rounded-tl-none px-6 py-5">
+                            <div class="text-cyan-400 text-xs font-medium mb-3">DSA GURU 🔥</div>
+                            <div class="text-[15.5px] leading-relaxed">
+                                Arre bhai! 👋<br><br>
+                                Main hoon tumhara strict DSA Instructor.<br>
+                                Sirf Data Structures aur Algorithms ke questions pooch sakte ho.<br><br>
+                                <span class="text-amber-400">Koi aur bakwas kiya toh seedha daant padegi!</span><br><br>
+                                Ready ho? Pooch lo kya seekhna hai aaj...
+                            </div>
+                        </div>
+                    </div>
+                `;
+                chat.appendChild(welcome);
+            }
+
+            // Render conversation
+            messages.forEach(msg => {
+                addMessage(msg.role, msg.content);
+            });
+
+            scrollToBottom();
+        }
+
+        // ============== API CALL ==============
+        async function callGemini(userMessage) {
+            const requestBody = {
+                contents: messages.map(m => ({
+                    role: m.role,
+                    parts: [{ text: m.content }]
+                })),
+                systemInstruction: {
+                    parts: [{ text: SYSTEM_PROMPT }]
+                },
+                generationConfig: {
+                    temperature: 0.7,
+                    maxOutputTokens: 2048,
+                }
+            };
+
+            const response = await fetch(API_URL, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(requestBody)
+            });
+
+            if (!response.ok) {
+                const err = await response.text();
+                throw new Error(`API Error: ${response.status} ${err}`);
+            }
+
+            const data = await response.json();
+            return data.candidates[0].content.parts[0].text;
+        }
+
+        // ============== SEND MESSAGE ==============
+        async function sendMessage() {
+            if (isLoading) return;
+
+            const text = input.value.trim();
+            if (!text) return;
+
+            // Add user message
+            messages.push({ role: 'user', content: text });
+            addMessage('user', text);
+            input.value = '';
+
+            isLoading = true;
+
+            // Show typing
+            const typingIndicator = showTypingIndicator();
+
+            try {
+                const botReply = await callGemini(text);
+
+                // Remove typing
+                removeTypingIndicator();
+
+                // Add bot message
+                messages.push({ role: 'model', content: botReply });
+                addMessage('model', botReply);
+
+            } catch (error) {
+                removeTypingIndicator();
+                console.error(error);
+                addMessage('model', "Bhai server mein thodi dikkat aa gayi hai. Fir se try karo! 🔥");
+            } finally {
+                isLoading = false;
+            }
+        }
+
+        function sendSuggested(question) {
+            input.value = question;
+            sendMessage();
+        }
+
+        function clearChat() {
+            messages = [];
+            renderMessages();
+            input.focus();
+        }
+
+        // ============== EVENT LISTENERS ==============
+        function init() {
+            // Tailwind already loaded via CDN
+
+            renderMessages();
+
+            // Enter key support
+            input.addEventListener('keydown', (e) => {
+                if (e.key === 'Enter' && !e.shiftKey) {
+                    e.preventDefault();
+                    sendMessage();
+                }
+            });
+
+            // Auto focus
+            setTimeout(() => input.focus(), 500);
+
+            // Make textarea grow
+            input.addEventListener('input', function () {
+                this.style.height = 'auto';
+                this.style.height = Math.min(this.scrollHeight, 200) + 'px';
+            });
+        }
+
+        // Start the app
+        window.onload = init;
+    </script>
+</body>
+
+</html>
